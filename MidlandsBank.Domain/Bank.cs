@@ -79,6 +79,12 @@ namespace MidlandsBank.Domain
             return account.Transactions.Where(x => x.Date <= DateTime.Now);
         }
 
+        public IEnumerable<Transaction> GetPendingTransactionsForAccount(string accountNo)
+        {
+            var account = FindAccount(accountNo);
+            return account.Transactions.Where(x => x.Date > DateTime.Now);
+        }
+
 
 
         public void MonthlyRun()

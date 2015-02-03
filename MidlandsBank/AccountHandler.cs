@@ -59,17 +59,28 @@ namespace MidlandsBank
         [CmdRoute("statement account", "Lists all the transactions have happened on an account", true)]
         public void Statement(IDictionary<string, string> param, CmdR cmdR)
         {
+            DrawTransactions(_bank.GetTransactionsForAccount(param["account"]), cmdR);
+        }
+
+        [CmdRoute("pending account", "Lists all the transactions have happened on an account", true)]
+        public void PendingTransactions(IDictionary<string, string> param, CmdR cmdR)
+        {
+            DrawTransactions(_bank.GetPendingTransactionsForAccount(param["account"]), cmdR);
+        }
+
+        private void DrawTransactions(IEnumerable<Transaction> transactions, CmdR cmdR)
+        {
             cmdR.Console.WriteLine("Date        Description                      Amount      Balance");
             cmdR.Console.WriteLine("----------  --------------------------  -----------  -----------");
 
-            foreach (var transaction in _bank.GetTransactionsForAccount(param["account"]))
+            foreach (var transaction in transactions)
             {
 
                 cmdR.Console.WriteLine("{0}  {1}  {2}  {3}",
                     transaction.Date.ToString("d"),
                     transaction.Description.PadRight(26),
-                    transaction.Amount.ToString("0,0.00").PadLeft(11),
-                    transaction.Balance.ToString("0,0.00").PadLeft(11));
+                    transaction.Amount.ToString("c").PadLeft(11),
+                    transaction.Balance.ToString("c").PadLeft(11));
             }
 
             cmdR.Console.WriteLine("");
