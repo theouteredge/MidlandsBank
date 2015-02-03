@@ -13,12 +13,17 @@ namespace MidlandsBank.Persistance
     {
         private const string JsonFile = "bank.json";
 
+        private readonly JsonSerializerSettings _settings = new JsonSerializerSettings()
+        {
+            TypeNameHandling = TypeNameHandling.All
+        };
+
         public Bank Get()
         {
             if (File.Exists(JsonFile))
             {
                 var json = File.ReadAllText(JsonFile);
-                return JsonConvert.DeserializeObject<Bank>(json);
+                return JsonConvert.DeserializeObject<Bank>(json, _settings);
             }
 
             return new Bank();
@@ -26,7 +31,7 @@ namespace MidlandsBank.Persistance
 
         public void Set(Bank bank)
         {
-            var json = JsonConvert.SerializeObject(bank);
+            var json = JsonConvert.SerializeObject(bank, Formatting.Indented, _settings);
             File.WriteAllText(JsonFile, json);
         }
     }
