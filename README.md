@@ -6,6 +6,6 @@ C# Fundimentals Course
 
 http://channel9.msdn.com/Series/C-Sharp-Fundamentals-Development-for-Absolute-Beginners
 
-C# Fundamentals with C# 5.0 (paid)
+C# Fundamentals with C# 5.0 (paid, free trial)
 
 http://www.pluralsight.com/courses/csharp-fundamentals-csharp5
