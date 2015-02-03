@@ -48,6 +48,7 @@
     <Compile Include="Bank.cs" />
     <Compile Include="CurrentAccount.cs" />
     <Compile Include="IAquireInterest.cs" />
+    <Compile Include="MoneyTransferService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SavingsAccount.cs" />
     <Compile Include="ShariaAccount.cs" />

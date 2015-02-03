@@ -183,8 +183,7 @@ namespace MidlandsBank
         {
             try
             {
-                cmdR.Console.WriteLine("Yeah, haven't done this yet");
-                //_bank.TransferMoney(param["fromAccount"], param["toAccount"], param["amount"]);
+                _bank.TransferMoney(param["fromAccount"], param["toAccount"], param["amount"]);
             }
             catch (Exception ex)
             {

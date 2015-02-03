@@ -111,11 +111,16 @@ namespace MidlandsBank.Domain
         
         public void TransferMoney(string from, string to, string amount)
         {
+            double transfer;
+            if (!double.TryParse(amount, out transfer))
+                throw new ArgumentException("The transfer amount amount can not be converted into a valid Money value", "amount");
+
+
             var fromAccount = FindAccount(from);
             var toAccount = FindAccount(to);
 
 
-            throw new NotImplementedException();
+            MoneyTransferService.TransferMoney(fromAccount, toAccount, transfer);
         }
 
         
