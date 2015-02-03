@@ -116,6 +116,19 @@ namespace MidlandsBank
             }
         }
 
+        [CmdRoute("open-sharia name balance", "Creates a new Sharia Current Account", true)]
+        public void OpenShariaAccount(IDictionary<string, string> param, CmdR cmdR)
+        {
+            try
+            {
+                _bank.OpenShariaAccount(param["name"], param["balance"]);
+            }
+            catch (Exception ex)
+            {
+                cmdR.Console.WriteLine("Unable to add your new savings account, the following error was raised: " + ex.Message);
+            }
+        }
+
 
 
 

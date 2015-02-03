@@ -49,6 +49,16 @@ namespace MidlandsBank.Domain
             Accounts.Add(account);
         }
 
+        public void OpenShariaAccount(string accountHolder, string deposit)
+        {
+            double openingDeposit;
+            if (!double.TryParse(deposit, out openingDeposit))
+                throw new ArgumentException("The opening deposit could not be converted into a valid Money value", "deposit");
+
+            var account = new ShariaAccount(AssignAccountId(), accountHolder, openingDeposit);
+            Accounts.Add(account);
+        }
+
         
 
 
@@ -92,7 +102,10 @@ namespace MidlandsBank.Domain
 
         public void MonthlyRun()
         {
-            throw new NotImplementedException();
+            foreach (var account in Accounts.Where(x => x is IAquireInterest))
+            {
+                ((IAquireInterest)account).CalculateAndApplyInterest();
+            }
         }
 
         

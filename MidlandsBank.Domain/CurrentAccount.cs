@@ -9,7 +9,7 @@ using System.Transactions.Configuration;
 
 namespace MidlandsBank.Domain
 {
-    public class CurrentAccount : Account
+    public class CurrentAccount : Account, IAquireInterest
     {
         public double OverdraftLimit { get; set; }
 
@@ -17,12 +17,14 @@ namespace MidlandsBank.Domain
         public CurrentAccount()
         {
             // for serialisation
+            InterestRate = 0.75;
         }
 
         public CurrentAccount(int accountNumber, string accountHoldersName, double openingDeposit)
             : base(accountNumber, accountHoldersName, openingDeposit)
         {
             OverdraftLimit = 100;
+            InterestRate = 0.75;
         }
 
         public override void Withdraw(double amount, string description)
@@ -31,6 +33,13 @@ namespace MidlandsBank.Domain
 
             if (CurrentBalance() < (OverdraftLimit*-1))
                 Transactions.Add(new Transaction(NextMonth(), -25, 0, "Unarranged Overdraft Fee"));
+        }
+
+        public double InterestRate { get; set; }
+        public void CalculateAndApplyInterest()
+        {
+            double interestAquired = CurrentBalance() * (InterestRate /100);
+            Transactions.Add(new Transaction(interestAquired, CurrentBalance(), "Monthly Interest Rate"));
         }
     }
 }
