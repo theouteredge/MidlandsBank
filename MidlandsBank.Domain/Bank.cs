@@ -5,17 +5,19 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace MidlandsBank.Domain
 {
     public class Bank
     {
-        public List<CurrentAccount> Accounts { get; set; }
+        [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
+        public List<Account> Accounts { get; set; }
 
 
         public Bank()
         {
-            Accounts = new List<CurrentAccount>();
+            Accounts = new List<Account>();
         }
 
 
@@ -43,7 +45,8 @@ namespace MidlandsBank.Domain
             if (!double.TryParse(deposit, out openingDeposit))
                 throw new ArgumentException("The opening deposit could not be converted into a valid Money value", "deposit");
 
-            throw new NotImplementedException();
+            var account = new SavingsAccount(AssignAccountId(), accountHolderName, openingDeposit);
+            Accounts.Add(account);
         }
 
         
@@ -79,6 +82,12 @@ namespace MidlandsBank.Domain
             return account.Transactions.Where(x => x.Date <= DateTime.Now);
         }
 
+        public IEnumerable<Transaction> GetPendingTransactionsForAccount(string accountNo)
+        {
+            var account = FindAccount(accountNo);
+            return account.Transactions.Where(x => x.Date > DateTime.Now);
+        }
+
 
 
         public void MonthlyRun()
@@ -97,7 +106,7 @@ namespace MidlandsBank.Domain
         }
 
         
-        private CurrentAccount FindAccount(string accountNo)
+        private Account FindAccount(string accountNo)
         {
             int accountNumber;
             if (!int.TryParse(accountNo, out accountNumber))
