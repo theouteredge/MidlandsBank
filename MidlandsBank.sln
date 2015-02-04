@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidlandsBank.Persistance", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{554D0289-197A-4DF0-AD17-AC5EDDF7303D}"
 	ProjectSection(SolutionItems) = preProject
+		Introduction to Object Orientated Programming with C.pptx = Introduction to Object Orientated Programming with C.pptx
 		README.md = README.md
 	EndProjectSection
 EndProject

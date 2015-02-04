@@ -67,19 +67,20 @@ namespace MidlandsBank.Domain
         public double CurrentBalance()
         {
             return Transactions.Where(x => x.Date <= DateTime.Now)
-                               .Select(transaction => transaction.Amount)
+                               .Select(x => x.Amount)
                                .Sum();
 
             // Old Linq
             //var sum = (from trans in Transactions
-            //    where trans.Amount > 100
+            //    where trans.Date <= DateTime.Now
             //    select trans.Amount).Sum();
 
             // old skool
             //double sum = 0;
             //foreach (var trans in Transactions)
             //{
-            //    sum += trans.Amount;
+            //    if (trans.Date <= DateTime.Now)
+            //        sum += trans.Amount;
             //}
             //return sum;
         }
