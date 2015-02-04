@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace MidlandsBank.Domain
 {
-    public class Account
+    public abstract class Account
     {
         public int AccountNumber { get; set; }
         public string AccountHolderName { get; set; }
         public List<Transaction> Transactions { get; set; }
 
 
-        public Account()
+        protected Account()
         {
             // for serilaisation
         }
 
-        public Account(int accountNumber, string accountHolderName, double openingDeposit)
+        protected Account(int accountNumber, string accountHolderName, double openingDeposit)
         {
             if (string.IsNullOrEmpty(accountHolderName))
                 throw new ArgumentException("You have to specify the account holders name", "accountHolderName");
@@ -63,14 +63,15 @@ namespace MidlandsBank.Domain
 
             // Old Linq
             //var sum = (from trans in Transactions
-            //    where trans.Amount > 100
+            //    where trans.Date <= DateTime.Now
             //    select trans.Amount).Sum();
 
             // old skool
             //double sum = 0;
             //foreach (var trans in Transactions)
             //{
-            //    sum += trans.Amount;
+            //    if (trans.Date <= DateTime.Now)
+            //        sum += trans.Amount;
             //}
             //return sum;
         }
