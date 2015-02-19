@@ -54,6 +54,15 @@ namespace MidlandsBank
             }
 
             cmdR.Console.WriteLine("");
+
+            foreach(var card in _bank.CreditCards)
+                cmdR.Console.WriteLine("{0}  {1}  {2}  {3}",
+                    card.AccountNumber.ToString().PadLeft(7, '0'),
+                    card.GetType().Name.PadRight(20),
+                    card.AccountHolderName.PadRight(20),
+                    card.CurrentBalance().ToString("£0,0.00").PadLeft(11));
+
+            cmdR.Console.WriteLine("");
         }
 
 
@@ -68,6 +77,21 @@ namespace MidlandsBank
         {
             DrawTransactions(_bank.GetPendingTransactionsForAccount(param["account"]), cmdR);
         }
+
+        [CmdRoute("card-statement account", "Lists all the transactions have happened on an credit card", true)]
+        public void CardTransactions(IDictionary<string, string> param, CmdR cmdR)
+        {
+            int accountNo;
+            if (!int.TryParse(param["account"], out accountNo))
+                throw new Exception("Unable to convert the account number into an Int");
+
+            var card = _bank.CreditCards.FirstOrDefault(x => x.AccountNumber == accountNo);
+            if (card == null)
+                throw new Exception("Invalid card account number");
+
+            DrawTransactions(card.Transactions, cmdR);
+        }
+
 
         private void DrawTransactions(IEnumerable<Transaction> transactions, CmdR cmdR)
         {
@@ -106,8 +130,21 @@ namespace MidlandsBank
         {
             try
             {
-                cmdR.Console.WriteLine("Yeah, haven't done this yet");
                 _bank.OpenSavingsAccount(param["name"], param["balance"]);
+            }
+            catch (Exception ex)
+            {
+                cmdR.Console.WriteLine("Unable to add your new savings account, the following error was raised: " + ex.Message);
+            }
+        }
+
+
+        [CmdRoute("apply-creditcard name limit", "Creates a new Credit Card", true)]
+        public void ApplyForCreditCard(IDictionary<string, string> param, CmdR cmdR)
+        {
+            try
+            {
+                _bank.ApplyCreditCard(param["name"], param["limit"]);
             }
             catch (Exception ex)
             {
@@ -169,8 +206,7 @@ namespace MidlandsBank
         {
             try
             {
-                cmdR.Console.WriteLine("Yeah, haven't done this yet");
-                //_bank.TransferMoney(param["fromAccount"], param["toAccount"], param["amount"]);
+                _bank.TransferMoney(param["fromAccount"], param["toAccount"], param["amount"]);
             }
             catch (Exception ex)
             {
